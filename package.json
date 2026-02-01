@@ -1,0 +1,15 @@
+{
+  "name": "khatabook",
+  "version": "1.0.0",
+  "description": "KhataBook - Account-based ledger and expense tracking",
+  "private": true,
+  "scripts": {
+    "frontend": "node server-frontend.js",
+    "backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "express": "^4.18.2"
+  }
+}

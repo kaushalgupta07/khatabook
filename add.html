@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KhataBook - Account-based ledger and expense tracking system" />
+  <meta name="theme-color" content="#22c55e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="KhataBook" />
+  <title>KhataBook - Add Expense</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="kb-header">
+    <h1>KhataBook</h1>
+    <nav class="kb-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="add.html" class="active">Add Expense</a>
+      <a href="report.html">Reports</a>
+      <a href="logout.html" class="kb-nav-logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="kb-main">
+    <section class="kb-form-section">
+      <h2>Add New Transaction</h2>
+      <form id="expense-form" class="kb-form">
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input type="date" id="date" required />
+          <small class="kb-help">Select the date of the transaction.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="transactionType">Transaction Type</label>
+          <select id="transactionType" required>
+            <option value="pay" selected>Pay</option>
+            <option value="receive">Receive</option>
+            <option value="transfer">Transfer</option>
+          </select>
+          <small id="typeHelp" class="kb-help">Choose what you are doing: paying, receiving, or moving money between your accounts.</small>
+        </div>
+
+        <div class="form-group">
+          <label id="debitLabel" for="debitAccount">From Account (Debit)</label>
+          <select id="debitAccount">
+            <option value="">Select account</option>
+            <!-- Options will be populated dynamically by JavaScript -->
+          </select>
+          <small id="debitHelp" class="kb-help">For payments: choose your Cash/Bank. For transfers: choose the account money goes out from.</small>
+        </div>
+
+        <div class="form-group">
+          <label id="creditLabel" for="creditAccount">To Account (Credit)</label>
+          <select id="creditAccount">
+            <option value="">Select account</option>
+            <!-- Options will be populated dynamically by JavaScript -->
+          </select>
+          <small id="creditHelp" class="kb-help">For receiving: choose your Cash/Bank. For transfers: choose the account money goes into.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" required>
+            <option value="">Select category</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label id="descriptionLabel" for="description">Paid to</label>
+          <input type="text" id="description" placeholder="Paid to..." required />
+          <small id="descriptionHelp" class="kb-help">Enter the person/shop you paid.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="amount">Amount (₹)</label>
+          <input type="number" id="amount" min="0" step="0.01" required />
+          <small class="kb-help">Enter the amount. Must be greater than zero.</small>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Save Transaction</button>
+          <a href="index.html" class="btn-secondary">Cancel</a>
+        </div>
+      </form>
+
+      <div class="kb-account-settings">
+        <button type="button" id="open-account-manager" class="btn-account-settings">
+          <span>⚙️</span> Manage Accounts
+        </button>
+        <button type="button" id="open-category-manager" class="btn-account-settings">
+          <span>📝</span> Customize Categories
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Account Manager Modal -->
+  <div id="account-manager-modal" class="account-manager-modal" style="display: none;">
+    <div class="account-manager-content">
+      <div class="account-manager-header">
+        <h2>Manage Accounts</h2>
+        <button type="button" id="close-account-manager" class="btn-close-modal">×</button>
+      </div>
+      <div class="account-manager-body">
+        <div class="account-manager-actions">
+          <button type="button" id="add-account-btn" class="btn-primary">+ Add New Account</button>
+          <p class="kb-help">Drag accounts to reorder. Hidden accounts won't appear in dropdowns but transactions remain.</p>
+        </div>
+        <div id="account-list-container" class="account-list-container">
+          <!-- Account list will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Manager Modal -->
+  <div id="category-manager-modal" class="account-manager-modal" style="display: none;">
+    <div class="account-manager-content category-manager-content">
+      <div class="account-manager-header">
+        <h2>Customize Categories</h2>
+        <button type="button" id="close-category-manager" class="btn-close-modal">×</button>
+      </div>
+      <div class="account-manager-body">
+        <div class="category-manager-tabs">
+          <button type="button" class="category-tab active" data-category-tab="pay">Pay Categories</button>
+          <button type="button" class="category-tab" data-category-tab="receive">Receive Categories</button>
+        </div>
+        <p class="kb-help">
+          Add, rename, or delete categories. These changes update the transaction form instantly.
+        </p>
+        <div class="category-add-row">
+          <input type="text" id="new-category-input" placeholder="New category name" />
+          <button type="button" id="add-category-btn" class="btn-primary">+ Add</button>
+        </div>
+        <div id="category-list-container" class="category-list-container">
+          <!-- Category list will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth-config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/add.js"></script>
+  <script src="js/account-manager.js"></script>
+  <script src="js/sw-register.js"></script>
+</body>
+</html>

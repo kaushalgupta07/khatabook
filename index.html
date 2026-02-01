@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KhataBook - Account-based ledger and expense tracking system" />
+  <meta name="theme-color" content="#22c55e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="KhataBook" />
+  <title>KhataBook - Dashboard</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="kb-header">
+    <h1>KhataBook</h1>
+    <nav class="kb-nav">
+      <a href="index.html" class="active">Dashboard</a>
+      <a href="add.html">Add Expense</a>
+      <a href="report.html">Reports</a>
+      <a href="logout.html" class="kb-nav-logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="kb-main">
+    <section class="kb-summary">
+      <div class="card">
+        <h2>Total Expenses</h2>
+        <p id="total-expense">₹0</p>
+      </div>
+      <div class="card">
+        <h2>Monthly Spending</h2>
+        <p id="monthly-expense">₹0</p>
+      </div>
+      <div class="card">
+        <h2>Net Worth</h2>
+        <p id="net-worth">₹0</p>
+      </div>
+    </section>
+
+    <section class="kb-accounts">
+      <h2>Account Balances</h2>
+      <div id="account-balances" class="account-balances-grid">
+        <!-- Account balances will be populated by app.js -->
+      </div>
+    </section>
+
+    <section class="kb-list">
+      <div class="kb-list-header">
+        <h2>Recent Expenses</h2>
+        <a href="add.html" class="btn-primary">+ Add New</a>
+      </div>
+      <table class="kb-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Accounts</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody id="expense-list">
+          <!-- Rows will be populated by app.js -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="js/auth-config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/sw-register.js"></script>
+</body>
+</html>

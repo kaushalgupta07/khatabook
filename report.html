@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KhataBook - Account-based ledger and expense tracking system" />
+  <meta name="theme-color" content="#22c55e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="KhataBook" />
+  <title>KhataBook - Reports</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="kb-header">
+    <h1>KhataBook</h1>
+    <nav class="kb-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="add.html">Add Expense</a>
+      <a href="report.html" class="active">Reports</a>
+      <a href="logout.html" class="kb-nav-logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="kb-main">
+    <section id="report-home" class="kb-report-home">
+      <h2>Select a Report</h2>
+      <div class="kb-report-type-grid">
+        <button type="button" class="kb-report-type-card" data-report-type="expense-summary" data-report="expense">
+          <div class="kb-report-type-icon">💸</div>
+          <div class="kb-report-type-body">
+            <h3>Expense Summary</h3>
+            <p>See total spending over time.</p>
+          </div>
+        </button>
+        <button type="button" class="kb-report-type-card" data-report-type="income-summary" data-report="income">
+          <div class="kb-report-type-icon">💰</div>
+          <div class="kb-report-type-body">
+            <h3>Income Summary</h3>
+            <p>Track your incoming cash.</p>
+          </div>
+        </button>
+        <button type="button" class="kb-report-type-card" data-report-type="category-expense" data-report="category">
+          <div class="kb-report-type-icon">📊</div>
+          <div class="kb-report-type-body">
+            <h3>Category-wise Expenses</h3>
+            <p>Analyze spending by category.</p>
+          </div>
+        </button>
+        <button type="button" class="kb-report-type-card" data-report-type="account-summary" data-report="account">
+          <div class="kb-report-type-icon">🏦</div>
+          <div class="kb-report-type-body">
+            <h3>Account-wise Report</h3>
+            <p>Inflow, outflow, and balances.</p>
+          </div>
+        </button>
+        <button type="button" class="kb-report-type-card" data-report-type="monthly-trend" data-report="monthly">
+          <div class="kb-report-type-icon">📈</div>
+          <div class="kb-report-type-body">
+            <h3>Monthly Trend</h3>
+            <p>Expense vs income by month.</p>
+          </div>
+        </button>
+        <button type="button" class="kb-report-type-card" data-report-type="net-worth" data-report="networth">
+          <div class="kb-report-type-icon">💹</div>
+          <div class="kb-report-type-body">
+            <h3>Net Worth</h3>
+            <p>Current value of all accounts.</p>
+          </div>
+        </button>
+        <button type="button" class="kb-report-type-card" data-report-type="detailed" data-report="detailed">
+          <div class="kb-report-type-icon">📜</div>
+          <div class="kb-report-type-body">
+            <h3>Detailed Transactions</h3>
+            <p>Full list with filters.</p>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <section id="report-workspace" class="kb-report-workspace" style="display: none;">
+      <div class="kb-report-header">
+        <button type="button" id="report-back-btn" class="btn-secondary kb-report-back">← Back to Reports</button>
+        <div class="kb-report-breadcrumb" id="report-breadcrumb">Reports</div>
+      </div>
+
+      <div class="kb-report-content-wrapper">
+        <div id="report-loading" class="kb-report-loading" style="display: none;">
+          <div class="kb-loader"></div>
+          <p>Loading report…</p>
+        </div>
+
+        <div id="report-empty" class="kb-empty" style="display: none;">
+          No data available for this report.
+        </div>
+
+        <div id="report-content">
+          <!-- Report content will be dynamically rendered here -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/auth-config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/reportCalculations.js"></script>
+  <script src="js/reportRenderer.js"></script>
+  <script src="reports.js"></script>
+  <script src="js/sw-register.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KhataBook - Sign in with Google" />
+  <meta name="theme-color" content="#22c55e" />
+  <title>KhataBook - Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .login-card {
+      background: var(--kb-surface);
+      border: 1px solid var(--kb-border);
+      border-radius: var(--kb-radius);
+      padding: 2.5rem;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--kb-shadow);
+    }
+    .login-card h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.5rem;
+      letter-spacing: 0.1em;
+    }
+    .login-card p {
+      color: var(--kb-muted);
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+    .btn-google {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 0.9rem 1.5rem;
+      background: #fff;
+      color: #333;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .btn-google:hover {
+      background: #f8f9fa;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #google-login-container > div {
+      margin: 0 auto;
+    }
+    .login-error {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--kb-danger);
+      border-radius: 8px;
+      color: #fca5a5;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .login-error.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <h1>KhataBook</h1>
+      <p>Sign in with your Google account to access your ledger from any device.</p>
+      <div id="google-login-container"></div>
+      <div id="login-error" class="login-error"></div>
+    </div>
+  </div>
+  <script src="js/auth-config.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

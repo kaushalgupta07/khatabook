@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icon Generator - KhataBook</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+    .container {
+      background: rgba(15, 23, 42, 0.9);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+    button {
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 0.5rem;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    }
+    .icon-preview {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .icon-item {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 8px;
+    }
+    .icon-item canvas {
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 8px;
+    }
+    .icon-item p {
+      margin: 0.5rem 0 0;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .info {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>KhataBook Icon Generator</h1>
+    <div class="info">
+      <p>Click "Generate Icons" to create PWA icons. Then right-click each icon and "Save image as..." to save them in an "icons" folder.</p>
+      <p><strong>Note:</strong> Create an "icons" folder in your project root and save all icons there.</p>
+    </div>
+    <button onclick="generateIcons()">Generate Icons</button>
+    <button onclick="downloadAllIcons()">Download All Icons</button>
+    <div id="icon-preview" class="icon-preview"></div>
+  </div>
+
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+    let generatedIcons = [];
+
+    function generateIcons() {
+      const container = document.getElementById('icon-preview');
+      container.innerHTML = '';
+      generatedIcons = [];
+
+      sizes.forEach(size => {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        // Background gradient
+        const gradient = ctx.createLinearGradient(0, 0, size, size);
+        gradient.addColorStop(0, '#22c55e');
+        gradient.addColorStop(1, '#16a34a');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+
+        // Add rounded corners effect
+        ctx.globalCompositeOperation = 'destination-in';
+        ctx.beginPath();
+        const radius = size * 0.2;
+        ctx.roundRect(0, 0, size, size, radius);
+        ctx.fill();
+
+        ctx.globalCompositeOperation = 'source-over';
+
+        // Text "KB"
+        ctx.fillStyle = '#022c22';
+        ctx.font = `bold ${size * 0.4}px system-ui, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('KB', size / 2, size / 2);
+
+        const iconItem = document.createElement('div');
+        iconItem.className = 'icon-item';
+        iconItem.appendChild(canvas);
+        const label = document.createElement('p');
+        label.textContent = `${size}x${size}`;
+        iconItem.appendChild(label);
+        container.appendChild(iconItem);
+
+        generatedIcons.push({ canvas, size });
+      });
+    }
+
+    function downloadAllIcons() {
+      if (generatedIcons.length === 0) {
+        alert('Please generate icons first!');
+        return;
+      }
+
+      generatedIcons.forEach(({ canvas, size }) => {
+        canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `icon-${size}x${size}.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 'image/png');
+      });
+    }
+
+    // Polyfill for roundRect if not available
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+      CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+        this.beginPath();
+        this.moveTo(x + radius, y);
+        this.lineTo(x + width - radius, y);
+        this.quadraticCurveTo(x + width, y, x + width, y + radius);
+        this.lineTo(x + width, y + height - radius);
+        this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        this.lineTo(x + radius, y + height);
+        this.quadraticCurveTo(x, y + height, x, y + height - radius);
+        this.lineTo(x, y + radius);
+        this.quadraticCurveTo(x, y, x + radius, y);
+        this.closePath();
+      };
+    }
+
+    // Auto-generate on load
+    window.addEventListener('load', generateIcons);
+  </script>
+</body>
+</html>
