@@ -1,8 +1,7 @@
 // Data access layer for KhataBook.
 // Handles API calls for transactions and localStorage for UI settings.
 // After cloud migration: API is primary; localStorage only for UI preferences (accounts, categories).
-
-const API_BASE_URL = (typeof KB_AUTH_CONFIG !== "undefined" && KB_AUTH_CONFIG.API_BASE_URL) || "http://localhost:8080/api";
+const API_BASE_URL = "https://khatabook-production.up.railway.app/api";
 const MIGRATION_DONE_KEY = "khatabook_cloud_migrated";
 const STORAGE_KEY = "khatabook_expenses"; // Legacy support for old expense format
 const ACCOUNT_NAMES_KEY = "khatabook_account_names"; // Legacy support for old account names
