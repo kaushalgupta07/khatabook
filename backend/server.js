@@ -35,6 +35,7 @@ app.use("/api/transactions", transactionRoutes);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`KhataBook API running at http://localhost:${PORT}`);
-  console.log(`CORS allowed for: ${frontendUrl}`);
+  console.log(`🚀 KhataBook API running on port ${PORT}`);
+  console.log(`🌍 CORS allowed for: ${frontendUrl}`);
 });
+
