@@ -37,12 +37,7 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "KhataBook API is running" });
 });
 
-// Auth mount debug (GET /api/auth) - verify mounting in browser; remove in production if desired
-app.get("/api/auth", (req, res) => {
-  res.send("Auth route working");
-});
-
-// API routes - POST /api/auth/google is defined in routes/auth.js
+// API routes - single mount for auth; GET /api/auth/test and POST /api/auth/google live in routes/auth.js
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/transactions", transactionRoutes);

@@ -9,8 +9,18 @@ const pool = require("../config/database");
 const router = express.Router();
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+// Debug: GET /api/auth -> confirm auth router is mounted
+router.get("/", (req, res) => {
+  res.send("Auth route working");
+});
+
+// Debug: GET /api/auth/test -> confirm router is loaded
+router.get("/test", (req, res) => {
+  res.send("Google auth router is loaded");
+});
+
 /**
- * POST /auth/google
+ * POST /api/auth/google (mounted at /api/auth in server.js)
  * Body: { idToken: string } - Google ID token from frontend
  * Creates user if first login, returns JWT and user info.
  */
