@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.token && data.user) {
-          localStorage.setItem("token", data.token);
+          localStorage.setItem("authToken", data.token);
           localStorage.setItem("currentUser", JSON.stringify(data.user));
           window.location.href = "index.html";
         } else {

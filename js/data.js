@@ -1,7 +1,7 @@
 // Data access layer for KhataBook.
 // Handles API calls for transactions and localStorage for UI settings.
 // After cloud migration: API is primary; localStorage only for UI preferences (accounts, categories).
-const API_BASE_URL = "https://khatabook-production.up.railway.app/api";
+const API_BASE_URL = (typeof KB_AUTH_CONFIG !== "undefined" && KB_AUTH_CONFIG.API_BASE_URL) || "https://khatabook-production.up.railway.app/api";
 const MIGRATION_DONE_KEY = "khatabook_cloud_migrated";
 const STORAGE_KEY = "khatabook_expenses"; // Legacy support for old expense format
 const ACCOUNT_NAMES_KEY = "khatabook_account_names"; // Legacy support for old account names
@@ -28,13 +28,31 @@ function getCurrentUser() {
   return userStr ? JSON.parse(userStr) : null;
 }
 
+/**
+ * Reusable auth headers for all protected API requests.
+ * Uses authToken from localStorage. Redirects to login if no token.
+ */
 function getAuthHeaders() {
-  const token = localStorage.getItem("token");
-  const headers = { "Content-Type": "application/json" };
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    window.location.replace("login.html");
+    return { "Content-Type": "application/json" };
   }
-  return headers;
+  return {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+  };
+}
+
+/** If response is 401, clear auth and redirect to login. Returns true if caller should stop. */
+function handle401(response) {
+  if (response && response.status === 401) {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("currentUser");
+    window.location.replace("login.html");
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -313,6 +331,7 @@ async function migrateLocalStorageToCloud() {
       headers: getAuthHeaders(),
       body: JSON.stringify({ transactions }),
     });
+    if (handle401(response)) return;
     if (response.ok) {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.setItem(MIGRATION_DONE_KEY, "1");
@@ -339,6 +358,7 @@ async function getTransactions() {
       method: "GET",
       headers: getAuthHeaders()
     });
+    if (handle401(response)) return [];
     if (!response.ok) throw new Error("Failed to fetch transactions");
     return await response.json();
   } catch (error) {
@@ -359,7 +379,7 @@ async function addTransaction(transaction) {
     headers: getAuthHeaders(),
     body: JSON.stringify(transaction),
   });
-
+  if (handle401(response)) throw new Error("Unauthorized");
   if (!response.ok) throw new Error("Failed to save transaction");
   return await response.json();
 }
@@ -376,7 +396,7 @@ async function updateTransaction(id, updates) {
     headers: getAuthHeaders(),
     body: JSON.stringify(updates),
   });
-
+  if (handle401(response)) throw new Error("Unauthorized");
   if (!response.ok) throw new Error("Failed to update transaction");
   return await response.json();
 }
@@ -390,6 +410,7 @@ async function deleteTransaction(id) {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
+  if (handle401(response)) return false;
   if (!response.ok) throw new Error("Failed to delete transaction");
   return true;
 }

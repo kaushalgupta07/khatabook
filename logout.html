@@ -8,6 +8,7 @@
 <body>
   <p>Logging out...</p>
   <script>
+    localStorage.removeItem("authToken");
     localStorage.removeItem("token");
     localStorage.removeItem("currentUser");
     window.location.replace("login.html");

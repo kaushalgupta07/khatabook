@@ -8,7 +8,7 @@
   const LOGIN_PAGE = "login.html";
 
   function isLoggedIn() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const userStr = localStorage.getItem("currentUser");
     return !!(token && userStr);
   }
